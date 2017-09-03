@@ -48,6 +48,7 @@ trX, trY, teX, teY = mnist.train.images, mnist.train.labels, mnist.test.images, 
 with tf.Session() as sess:
     # you need to initialize all variables
     tf.global_variables_initializer()
+    saver = tf.train.Saver()
 
     for i in range(100):
         for start, end in zip(range(0, len(trX), 128), range(128, len(trX), 128)):
@@ -57,4 +58,6 @@ with tf.Session() as sess:
 
         mask_np = np.random.binomial(1, 1 - corruption_level, teX.shape)
         print(i, sess.run(cost, feed_dict={X: teX, mask: mask_np}))
+    
+    saver.save(sess, 'autoencoder')
 
